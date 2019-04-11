@@ -58,11 +58,11 @@ class Tickers:
 class Fetcher:
 
     def addSecs(tm, secs):
-    '''
-        Args:
-            tm: present times
-            secs: how many second to run
-    '''
+        '''
+            Args:
+             tm: present times
+                secs: how many second to run
+         '''
         date=datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
         date=date+datetime.timedelta(seconds=secs)
         return date.time()
