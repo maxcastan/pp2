@@ -63,9 +63,9 @@ class Fetcher:
             tm: present times
             secs: how many second to run
     '''
-    date=datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
-    date=date+datetime.timedelta(seconds=secs)
-    return date.time()
+        date=datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
+        date=date+datetime.timedelta(seconds=secs)
+        return date.time()
 
     def update_stock_info(ticker, stop):
         '''
