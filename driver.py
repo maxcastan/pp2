@@ -59,11 +59,15 @@ class Tickers:
 if __name__=="__main__":
     x=sys.argv[1]
     if(x=="Ticker"):
-        count=sys.argv[2]
-        print(count)
+        ticker_count=sys.argv[2]
+        print(ticker_count)
     elif(x=="Fetcher"):
-        x="4"
+        ticker_count=sys.argv[2]
+        time_limit=sys.argv[3]
+        db=sys.argv[4]
     elif(x=="Query"):
-        x="4"
+        time=sys.argv[2]
+        db=sys.argv[3]
+        ticker=sys.argv[4]
     else:
         print("Indicate Flag")
