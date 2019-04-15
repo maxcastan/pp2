@@ -7,6 +7,7 @@ import csv
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import datetime
 import matplotlib.pyplot as plot
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
@@ -17,10 +18,7 @@ class Tickers:
         self.ticker_count=int(ticker_count)
         self.ticker='x'
     def save_tickers(self):
-        '''
-        Args:
-            n: number of tickers to print to file
-        '''
+  
         fopen=open('tickers.txt','w+') #open the file in append mode
         page = requests.get('http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQ&pagesize=200') #saves all url info
         doc = lxml.html.fromstring(page.content)
@@ -45,11 +43,6 @@ class Tickers:
         fopen.close()
 
     def check_if_valid(self):
-        '''
-        uses iex-api-python to check if ticker has valid price function
-        Args:
-            ticker: fetched ticker from NASDAQ website
-        '''
         try:
             price = Stock(self.ticker).price()
             if price:
@@ -59,6 +52,50 @@ class Tickers:
         except(Exception,TypeError):
             return False
 
+class Fetcher:
+    def __init__(self, ticker_count, db, time_limit):
+        self.ticker_count=ticker_count
+        self.db=db
+        self.time_limit=time_limit
+    def addSecs(self, tm, secs):
+        date=datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
+        date=date+datetime.timedelta(seconds=secs)
+        return date.time()
+
+    def update_stock_info(self, ticker, stop):
+        now=datetime.datetime.now()
+        if(now.time()>stop):
+                    sys.exit()
+
+        conn=sqlite3.connect(self.db)
+        c=conn.cursor()
+
+        sys.stdout = open(os.devnull,"w")
+        c.execute("INSERT INTO data(Time, Ticker, latestPrice, latestVolume, Close, Open, low, high) VALUES("
+            +now.strftime("%H:%M")+", "+ticker+", "+ str(Stock(ticker).quote().get('latestPrice'))+ ", "+str(Stock(ticker).quote().get('latestVolume'))
+            +", "+str(Stock(ticker).quote().get('close'))+", "+str(Stock(ticker).quote().get('open'))+", "+str(Stock(ticker).quote().get('low'))
+            +", "+str(Stock(ticker).quote().get('high'))+")")
+
+        c.close()
+        conn.close()
+ 
+        sys.stdout = sys.__stdout__
+
+    def fetch_all_data(self):
+        conn=sqlite3.connect(self.db)
+        c=conn.cursor()
+
+        c.execute('CREATE TABLE IF NOT EXISTS data(Time text , Ticker text, latestPrice text, latestVolume text, Close text, Open text, low text, high text)')
+        c.close()
+        conn.close()
+        present=datetime.datetime.now()
+        stopTime=self.addSecs(present, int(self.time_limit))
+
+        with open('tickers.txt',"r") as f:
+            for tick in f:
+                self.update_stock_info(tick.strip(), stopTime)
+        
+
 
 if __name__=="__main__":
     x=sys.argv[1]
@@ -66,9 +103,8 @@ if __name__=="__main__":
         p=Tickers(sys.argv[2])
         p.save_tickers()
     elif(x=="Fetcher"):
-        ticker_count=sys.argv[2]
-        time_limit=sys.argv[3]
-        db=sys.argv[4]
+        p=Fetcher(sys.argv[2], sys.argv[4], sys.argv[3])
+        p.fetch_all_data()
     elif(x=="Query"):
         time=sys.argv[2]
         db=sys.argv[3]
