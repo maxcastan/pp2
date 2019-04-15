@@ -94,8 +94,24 @@ class Fetcher:
         with open('tickers.txt',"r") as f:
             for tick in f:
                 self.update_stock_info(tick.strip(), stopTime)
-        
 
+class Query:
+    def __init__(self, time, db, ticker):
+        self.time=time
+        self.db=db
+        self.ticker=ticker
+    def print_data(self):
+        conn=sqlite3.connect(self.db)
+        c=conn.cursor()       
+        
+        c.execute('SELECT * FROM data WHERE Time=? AND Ticker=?', (self.time, self.ticker))
+        rows=c.fetchall()
+        print("(Time, Ticker, latestPrice, latestVolume, Close, Open, low, high)")
+        for row in rows:
+            print(row)
+
+        c.close()
+        conn.close()
 
 if __name__=="__main__":
     x=sys.argv[1]
@@ -106,8 +122,7 @@ if __name__=="__main__":
         p=Fetcher(sys.argv[2], sys.argv[4], sys.argv[3])
         p.fetch_all_data()
     elif(x=="Query"):
-        time=sys.argv[2]
-        db=sys.argv[3]
-        ticker=sys.argv[4]
+        p=Query(sys.argv[2], sys.argv[3], sys.argv[4])
+        p.print_data()
     else:
         print("Indicate Flag")
