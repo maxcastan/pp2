@@ -1,3 +1,10 @@
+"""
+    stock.py file written by Max Castaneda and Paulina Scarlata
+    ============================================================
+    includes class Tickers, Fetcher, Query
+    to run autodoc-> ./make html
+"""
+
 import requests
 import sys,os
 from iex import Stock
@@ -14,11 +21,20 @@ from sklearn.linear_model import LinearRegression
 'exec(%matplotlib inline)'
 
 class Tickers:
+    """Tickers class to pull tickers from NASDAQ website and load specified amount to tickers.txt"""
     def __init__(self, ticker_count):
+        """
+            init function
+            Args:
+                ticker_count
+                    amount of tickers to load to tickers.txt
+        """
         self.ticker_count=int(ticker_count)
         self.ticker='x'
     def save_tickers(self):
-  
+        """
+            save_tickers() function uses lxml to parse html from NASDAQ
+        """
         fopen=open('tickers.txt','w+') #open the file in append mode
         page = requests.get('http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQ&pagesize=200') #saves all url info
         doc = lxml.html.fromstring(page.content)
@@ -43,6 +59,9 @@ class Tickers:
         fopen.close()
 
     def check_if_valid(self):
+        """
+            check_if_valid() function returns true only if price is found
+        """
         try:
             price = Stock(self.ticker).price()
             if price:
@@ -53,19 +72,49 @@ class Tickers:
             return False
 
 class Fetcher:
+    """Fetcher class to fetch current time, ticker, latestPrice, latestVolume, Close, Open, low, high for given tickers"""
     def __init__(self, ticker_count, db, time_limit):
+        """
+            init function
+            =============
+            Args:
+                ticker_count
+                    how many tickers to load info from
+                db
+                    passed in database name
+                time_limit
+                    how long fetcher should run
+        """
         self.ticker_count=ticker_count
         self.db=db
         self.time_limit=time_limit
     def addSecs(self, tm, secs):
+        """
+            addSecs function
+            ================
+            Args:
+                tm
+                    present time
+                secs
+                    how long to run
+        """
         date=datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
         date=date+datetime.timedelta(seconds=secs)
         return date.time()
 
     def update_stock_info(self, ticker, stop):
+        """
+            update_stock_info function
+                grabs corresponding ticker data and stores into sqlite database
+            Args:
+                ticker
+                    what ticker to look for
+                stop
+                    when to stop grabbing info
+        """
         now=datetime.datetime.now()
         if(now.time()>stop):
-                    sys.exit()
+            sys.exit()
 
         conn=sqlite3.connect(self.db)
         c=conn.cursor()
@@ -82,6 +131,10 @@ class Fetcher:
         sys.stdout = sys.__stdout__
 
     def fetch_all_data(self):
+        """
+            fetch_all_data function
+            creates db table and calls update_stock_info() for all tickers
+        """
         conn=sqlite3.connect(self.db)
         c=conn.cursor()
 
@@ -96,11 +149,27 @@ class Fetcher:
                 self.update_stock_info(tick.strip(), stopTime)
 
 class Query:
+    """Query class->prints data from specified ticker to stdout"""
     def __init__(self, time, db, ticker):
+        """
+            init function
+            =============
+            Args:
+                time
+                    what time to search for in db
+                db
+                    what db to search from
+                ticker
+                    what ticker to search for
+        """
         self.time=time
         self.db=db
         self.ticker=ticker
     def print_data(self):
+        """
+            print_data function
+            prints data to stdout for given ticker and time
+        """
         conn=sqlite3.connect(self.db)
         c=conn.cursor()       
         
