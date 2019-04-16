@@ -120,9 +120,9 @@ class Fetcher:
         c=conn.cursor()
 
         sys.stdout = open(os.devnull,"w")
-        c.execute('INSERT INTO data(Time, Ticker, latestPrice, latestVolume, Close, Open, low, high) VALUES(?, ?, ?, ?, ?, ?, ?, ?)', (str(now.strftime("%H:%M")), str(ticker), str(Stock(ticker).quote().get('latestPrice')), str(Stock(ticker).quote().get('latestVolume'))
-            , str(Stock(ticker).quote().get('close')), str(Stock(ticker).quote().get('open')), str(Stock(ticker).quote().get('low'))
-            , str(Stock(ticker).quote().get('high'))))
+        c.execute('INSERT INTO data(Time, Ticker, Low, High, Open, Close, Price, Volume) VALUES(?, ?, ?, ?, ?, ?, ?, ?)', (str(now.strftime("%H:%M")), str(ticker), str(Stock(ticker).quote().get('low')), str(Stock(ticker).quote().get('high'))
+            , str(Stock(ticker).quote().get('open')), str(Stock(ticker).quote().get('close')), str(Stock(ticker).quote().get('latestPrice'))
+            , str(Stock(ticker).quote().get('latestVolume'))))
         conn.commit()
 
         c.close()
@@ -138,7 +138,7 @@ class Fetcher:
         conn=sqlite3.connect(self.db)
         c=conn.cursor()
 
-        c.execute('CREATE TABLE IF NOT EXISTS data(Time VARCHAR, Ticker VARCHAR, latestPrice , latestVolume VARCHAR, Close VARCHAR, Open VARCHAR, low VARCHAR, high VARCHAR)')
+        c.execute('CREATE TABLE IF NOT EXISTS data(Time VARCHAR, Ticker VARCHAR, Low VARCHAR, High VARCHAR, Open VARCHAR, Close VARCHAR, Price , Volume VARCHAR)')
         c.close()
         conn.close()
         present=datetime.datetime.now()
