@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Project2&#39;s documentation! &#8212; Project2 4/15/19 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pp2.stock">
+<span id="welcome-to-project2-s-documentation"></span><h1>Welcome to Project2's documentation!<a class="headerlink" href="#module-pp2.stock" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="stock-py-file-written-by-max-castaneda-and-paulina-scarlata">
+<h2>stock.py file written by Max Castaneda and Paulina Scarlata<a class="headerlink" href="#stock-py-file-written-by-max-castaneda-and-paulina-scarlata" title="Permalink to this headline">¶</a></h2>
+<p>includes class Tickers, Fetcher, Query
+to run autodoc-&gt; ./make html</p>
+<dl class="class">
+<dt id="pp2.stock.Fetcher">
+<em class="property">class </em><code class="descclassname">pp2.stock.</code><code class="descname">Fetcher</code><span class="sig-paren">(</span><em>ticker_count</em>, <em>db</em>, <em>time_limit</em><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Fetcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetcher class to fetch current time, ticker, latestPrice, latestVolume, Close, Open, low, high for given tickers</p>
+<dl class="method">
+<dt id="pp2.stock.Fetcher.addSecs">
+<code class="descname">addSecs</code><span class="sig-paren">(</span><em>tm</em>, <em>secs</em><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Fetcher.addSecs" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tm</strong> -- present time</p></li>
+<li><p><strong>secs</strong> -- how long to run</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pp2.stock.Fetcher.fetch_all_data">
+<code class="descname">fetch_all_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Fetcher.fetch_all_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>fetch_all_data function
+creates db table and calls update_stock_info() for all tickers</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pp2.stock.Fetcher.update_stock_info">
+<code class="descname">update_stock_info</code><span class="sig-paren">(</span><em>ticker</em>, <em>stop</em><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Fetcher.update_stock_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>update_stock_info function
+grabs corresponding ticker data and stores into sqlite database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> -- what ticker to look for</p></li>
+<li><p><strong>stop</strong> -- when to stop grabbing info</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pp2.stock.Query">
+<em class="property">class </em><code class="descclassname">pp2.stock.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>time</em>, <em>db</em>, <em>ticker</em><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query class-&gt;prints data from specified ticker to stdout</p>
+<dl class="method">
+<dt id="pp2.stock.Query.print_data">
+<code class="descname">print_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Query.print_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>print_data function
+prints data to stdout for given ticker and time</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pp2.stock.Tickers">
+<em class="property">class </em><code class="descclassname">pp2.stock.</code><code class="descname">Tickers</code><span class="sig-paren">(</span><em>ticker_count</em><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Tickers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tickers class to pull tickers from NASDAQ website and load specified amount to tickers.txt</p>
+<dl class="method">
+<dt id="pp2.stock.Tickers.check_if_valid">
+<code class="descname">check_if_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Tickers.check_if_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>check_if_valid() function returns true only if price is found</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pp2.stock.Tickers.save_tickers">
+<code class="descname">save_tickers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pp2.stock.Tickers.save_tickers" title="Permalink to this definition">¶</a></dt>
+<dd><p>save_tickers() function uses lxml to parse html from NASDAQ</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Project2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Paulina Scarlata, Max Castaneda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
